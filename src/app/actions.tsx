@@ -26,12 +26,13 @@ export async function createNewPrompt(_: any, data: FormData) {
     const { json_schema: formSchema, ui_schema: uiSchema } =
       await customGenerateGPTFormSchema(
         { prompt, content },
-        { model: "gpt-3.5-turbo" }
+        { model: "gpt-4-turbo-preview" }
       );
 
     promptResult = await prisma.promptResult.create({
       data: {
         prompt,
+        context: content,
         formSchema: JSON.stringify(formSchema),
         uiSchema: JSON.stringify(uiSchema),
       },
