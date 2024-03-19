@@ -6,5 +6,5 @@ export default async function Hash({ params }: { params: { hash: string } }) {
   const result = (await fetchFromHash(hash)) ?? undefined;
   console.log({ result });
 
-  return <Form initialValues={result} />;
+  return <Form initialValue={result} />;
 }
