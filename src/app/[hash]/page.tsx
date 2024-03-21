@@ -1,10 +1,16 @@
-import { Form } from "@/components/Form";
+import { Checklist } from "@/components/Checklist";
 import { fetchFromHash } from "../actions";
 
 export default async function Hash({ params }: { params: { hash: string } }) {
   const { hash } = params;
-  const result = (await fetchFromHash(hash)) ?? undefined;
-  console.log({ result });
+  const result = await fetchFromHash(hash);
 
-  return <Form initialValue={result} />;
+  if (!result) return null;
+
+  return (
+    <Checklist
+      formSchema={JSON.parse(result.formSchema!)}
+      uiSchema={JSON.parse(result.uiSchema!)}
+    />
+  );
 }

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Footer } from "@/components/Footer";
+import { AppBar, Button, Toolbar } from "@mui/material";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,49 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <AppBar position="static">
+          <Toolbar className="flex px-8 justify-between flex-col md:flex-row">
+            <Button
+              variant="text"
+              color="inherit"
+              component={Link}
+              href="/"
+              className="flex-1 justify-start"
+            >
+              DietGPT
+            </Button>
+            <Button
+              variant="text"
+              color="inherit"
+              component={Link}
+              href="/store"
+            >
+              Plan a store trip
+            </Button>
+            <Button
+              variant="text"
+              color="inherit"
+              component={Link}
+              href="/meal-prep"
+            >
+              Create a meal prep for the week
+            </Button>
+            <Button
+              variant="text"
+              color="inherit"
+              component={Link}
+              href="/alternatives"
+            >
+              Get alternatives for recipes
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <main className="flex min-h-[90vh] md:flex-col items-center justify-center py-12 md:p-24 -mb-8">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }

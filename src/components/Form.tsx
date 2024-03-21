@@ -1,56 +1,63 @@
 "use client";
 
-import SchemaForm from "@rjsf/mui";
-import validator from "@rjsf/validator-ajv8";
-
-import { TextField } from "@mui/material";
-import { createNewPrompt } from "../app/actions";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useFormState } from "react-dom";
 import { FormButton } from "../components/FormButton";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 export function Form({
+  action,
   initialValue,
 }: {
+  action: (initialState: typeof initialValue, data: FormData) => void;
   initialValue?: {
-    context?: string | null;
-    prompt: string;
+    context: string | null;
     formSchema?: string;
     uiSchema?: string;
   };
 }) {
   const [state, formAction] = useFormState<
     typeof initialValue | { error: string }
-  >(createNewPrompt as any, initialValue);
+  >(action as any, initialValue);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <form action={formAction} className="flex flex-col">
-        {state && "error" in state && <p>{state.error}</p>}
-        <TextField
-          name="context"
-          label="Context"
-          defaultValue={initialValue?.context}
-          multiline
-          rows={8}
-        />
-        <TextField
-          name="prompt"
-          label="Prompt"
-          defaultValue={initialValue?.prompt}
-        />
-        <FormButton type="submit">Send</FormButton>
-      </form>
-
-      {state && "formSchema" in state && "uiSchema" in state && (
-        <ErrorBoundary errorComponent={() => <p>Failed to render form</p>}>
-          <SchemaForm
-            schema={JSON.parse(state.formSchema!)}
-            uiSchema={JSON.parse(state.uiSchema!)}
-            validator={validator}
-          />
-        </ErrorBoundary>
-      )}
-    </main>
+    <form
+      action={formAction}
+      className="flex flex-col border border-white w-full p-10"
+    >
+      {state && "error" in state && <p>{state.error}</p>}
+      <FormControl fullWidth>
+        <InputLabel id="model-label">Model</InputLabel>
+        <Select labelId="model-label" id="model" label="Model">
+          <MenuItem value="gpt-4-0125-preview">
+            gpt-4-0125-preview (Latest)
+          </MenuItem>
+          <MenuItem value="gpt-4-1106-preview">gpt-4-1106-preview</MenuItem>
+          <MenuItem value="gpt-4-0613">gpt-4-0613</MenuItem>
+          <MenuItem value="gpt-3.5-turbo-0125">
+            gpt-3.5-turbo-0125 (Latest)
+          </MenuItem>
+          <MenuItem value="gpt-3.5-turbo-1106">gpt-3.5-turbo-1106</MenuItem>
+          <MenuItem value="gpt-3.5-turbo-instruct">
+            gpt-3.5-turbo-instruct
+          </MenuItem>
+        </Select>
+      </FormControl>
+      <TextField
+        name="context"
+        label="Diet"
+        defaultValue={initialValue?.context}
+        multiline
+        rows={20}
+      />
+      <FormButton variant="contained" color="success" type="submit">
+        Send
+      </FormButton>
+    </form>
   );
 }
