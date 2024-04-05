@@ -9,6 +9,7 @@ export async function createNewPrompt(prompt: string, context: string) {
 
   let promptResult;
   try {
+    console.log("Sending request to OpenAPI");
     console.time("generateGPTFormSchema");
     const { json_schema: formSchema, ui_schema: uiSchema } =
       await customGenerateGPTFormSchema(

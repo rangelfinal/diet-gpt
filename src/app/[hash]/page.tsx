@@ -8,9 +8,11 @@ export default async function Hash({ params }: { params: { hash: string } }) {
   if (!result) return null;
 
   return (
-    <Checklist
-      formSchema={JSON.parse(result.formSchema!)}
-      uiSchema={JSON.parse(result.uiSchema!)}
-    />
+    <div style={{ overflow: "scroll" }}>
+      <Checklist
+        formSchema={JSON.parse(result.formSchema!)}
+        uiSchema={JSON.parse(result.uiSchema!)}
+      />
+    </div>
   );
 }

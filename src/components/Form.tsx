@@ -1,14 +1,18 @@
 "use client";
 
 import {
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
+  Tab,
   TextField,
 } from "@mui/material";
 import { useFormState } from "react-dom";
 import { FormButton } from "../components/FormButton";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { useState } from "react";
 
 export function Form({
   action,
@@ -24,6 +28,8 @@ export function Form({
   const [state, formAction] = useFormState<
     typeof initialValue | { error: string }
   >(action as any, initialValue);
+
+  const [tabState, setTabState] = useState("paste");
 
   return (
     <form
@@ -48,13 +54,29 @@ export function Form({
           </MenuItem>
         </Select>
       </FormControl>
-      <TextField
-        name="context"
-        label="Diet"
-        defaultValue={initialValue?.context}
-        multiline
-        rows={20}
-      />
+      <TabContext value={tabState}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <TabList
+            onChange={(_, value) => setTabState(value)}
+            aria-label="lab API tabs example"
+          >
+            <Tab label="Paste" value="paste" />
+            <Tab label="Upload" value="upload" />
+          </TabList>
+        </Box>
+        <TabPanel value="paste">
+          <TextField
+            name="context"
+            label="Diet"
+            defaultValue={initialValue?.context}
+            multiline
+            rows={20}
+            className="w-full"
+          />
+        </TabPanel>
+        <TabPanel value="upload">Item Two</TabPanel>
+      </TabContext>
+
       <FormButton variant="contained" color="success" type="submit">
         Send
       </FormButton>
