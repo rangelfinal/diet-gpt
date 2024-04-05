@@ -23,6 +23,7 @@ body {
       transparent 20%
     ),
     radial-gradient(circle at top right, #6a66a3 1%, transparent 15%), #13141f;
+  background-attachment: fixed;
 }
 
 @layer utilities {
